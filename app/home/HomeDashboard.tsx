@@ -78,19 +78,29 @@ function BarraProgreso({
   const pronto = diasRestantes <= 7 && diasRestantes > 3;
 
   return (
-    <div className="space-y-1.5">
+    <div
+      className={`space-y-1.5 ${
+        diasRestantes === 0
+          ? "rounded-[var(--savvy-radius-sm)] border border-red-500/80 bg-red-50/80 p-2 dark:bg-red-950/20 savvy-pulse-urgent"
+          : ""
+      }`}
+    >
       <div className="flex justify-between text-sm">
-        <span className="font-medium text-zinc-600 dark:text-zinc-400">
+        <span className="font-medium text-[var(--savvy-text-muted)]">
           Días faltantes
         </span>
         <span
-          className={
-            urgente
-              ? "font-semibold text-red-600 dark:text-red-400"
-              : pronto
-                ? "font-semibold text-amber-600 dark:text-amber-400"
-                : "font-semibold text-emerald-600 dark:text-emerald-400"
-          }
+          className="font-semibold"
+          style={{
+            color:
+              diasRestantes === 0
+                ? "#dc2626"
+                : urgente
+                ? "#dc2626"
+                : pronto
+                ? "#d97706"
+                : "var(--savvy-accent)",
+          }}
         >
           {diasRestantes === 0
             ? "Vence hoy"
@@ -99,17 +109,22 @@ function BarraProgreso({
               : `${diasRestantes} ${diasRestantes === 1 ? "día" : "días"}`}
         </span>
       </div>
-      <div className="h-2.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
+      <div
+        className="h-2 w-full overflow-hidden rounded-full"
+        style={{ background: "var(--savvy-gray-200)" }}
+      >
         <div
-          className={`h-full rounded-full transition-all duration-700 ease-out ${
-            urgente
-              ? "bg-red-500"
-              : pronto
-                ? "bg-amber-500"
-                : "bg-emerald-500"
-          }`}
+          className="h-full rounded-full transition-all duration-500 ease-out"
           style={{
             width: `${porcentaje}%`,
+            backgroundColor:
+              diasRestantes === 0
+                ? "#dc2626"
+                : urgente
+                ? "#dc2626"
+                : pronto
+                ? "#d97706"
+                : "var(--savvy-accent)",
             ...(animar && {
               animation: "progress-in 0.8s ease-out forwards",
               animationDelay: delay ? `${delay}ms` : undefined,
@@ -135,34 +150,61 @@ function TarjetaPago({
     [pago.fechaMaxima, hoy]
   );
 
+  const venceHoy = dias === 0;
+
   return (
     <article
-      className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition-all duration-300 hover:scale-[1.01] hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800/50"
+      className={`rounded-[var(--savvy-radius)] border p-5 transition-all hover:shadow-sm ${
+        venceHoy ? "border-red-500 bg-red-300/90 dark:bg-red-950/30 savvy-pulse-urgent" : ""
+      }`}
       style={{
+        borderColor: venceHoy ? "#dc2626" : "var(--savvy-border)",
+        background: venceHoy ? undefined : "var(--savvy-bg-elevated)",
         animation: "fade-in 0.4s ease-out forwards",
         animationDelay: `${index * 60}ms`,
         opacity: 0,
       }}
     >
+      {venceHoy && (
+        <div
+          className="mb-4 flex items-start gap-2 rounded-[var(--savvy-radius-sm)] border border-red-400/80 bg-red-300/90 px-3 py-2.5 dark:border-red-600/80 dark:bg-red-900/40"
+          role="alert"
+        >
+          <span className="text-lg leading-none" aria-hidden>
+            ⚠️
+          </span>
+          <p className="text-sm font-semibold text-red-800 dark:text-red-200">
+            Riesgo de no pago — Realiza el pago hoy para evitar cargos adicionales o cortes del servicio.
+          </p>
+        </div>
+      )}
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-2xl dark:bg-zinc-700">
+        <div
+          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[var(--savvy-radius-sm)] text-2xl ${
+            venceHoy ? "bg-red-200/80 dark:bg-red-800/50" : ""
+          }`}
+          style={!venceHoy ? { background: "var(--savvy-gray-100)" } : undefined}
+        >
           {pago.icono}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
+            <h3 className={`font-semibold ${venceHoy ? "text-red-900 dark:text-red-100" : "text-[var(--savvy-text-primary)]"}`}>
               {pago.nombre}
             </h3>
             {pago.proveedor && (
-              <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-xs text-zinc-500 dark:bg-zinc-700 dark:text-zinc-400">
+              <span
+                className="rounded-full px-2 py-0.5 text-xs text-[var(--savvy-text-muted)]"
+                style={{ background: "var(--savvy-gray-100)" }}
+              >
                 {pago.proveedor}
               </span>
             )}
           </div>
-          <p className="mt-0.5 text-lg font-semibold text-zinc-800 dark:text-zinc-200">
+          <p className={`mt-0.5 text-lg font-semibold ${venceHoy ? "text-red-900 dark:text-red-100" : "text-[var(--savvy-text-primary)]"}`}>
             {formatearCOP(pago.monto)}
           </p>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className={`mt-1 text-sm ${venceHoy ? "text-red-700 dark:text-red-300" : "text-[var(--savvy-text-muted)]"}`}>
             Fecha máxima de pago:{" "}
             <time dateTime={pago.fechaMaxima.toISOString().slice(0, 10)}>
               {formatearFecha(pago.fechaMaxima)}
@@ -259,20 +301,26 @@ export default function HomeDashboard({ initialDate }: HomeDashboardProps) {
   );
 
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950">
+    <div className="min-h-screen overflow-y-auto" style={{ background: "var(--savvy-bg)" }}>
       <div className="mx-auto max-w-4xl px-4 py-10 pb-16 sm:px-6 lg:px-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+        <header className="mb-10">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--savvy-text-primary)] sm:text-3xl">
             Finanzas personales
           </h1>
-          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            Pagos recurrentes en pesos colombianos (COP)
+          <p className="mt-1.5 text-[var(--savvy-text-secondary)]">
+            Pagos recurrentes en COP
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="rounded-xl bg-white px-4 py-2 text-sm font-medium shadow-sm dark:bg-zinc-800">
+            <span
+              className="rounded-[var(--savvy-radius-sm)] border px-4 py-2 text-sm font-medium text-[var(--savvy-text-secondary)]"
+              style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+            >
               Hoy: {hoy.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
             </span>
-            <span className="rounded-xl bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">
+            <span
+              className="rounded-[var(--savvy-radius-sm)] px-4 py-2 text-sm font-semibold"
+              style={{ color: "var(--savvy-accent)", background: "var(--savvy-accent-muted)" }}
+            >
               Total estimado: {formatearCOP(totalMensual)}
             </span>
           </div>
@@ -280,14 +328,17 @@ export default function HomeDashboard({ initialDate }: HomeDashboardProps) {
 
         <section className="space-y-4 pb-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2 className="text-lg font-semibold text-zinc-800 dark:text-zinc-200">
+            <h2 className="text-lg font-semibold text-[var(--savvy-text-primary)]">
               Próximos pagos{" "}
-              <span className="font-normal text-zinc-500 dark:text-zinc-400">
+              <span className="font-normal text-[var(--savvy-text-muted)]">
                 ({pagosOrdenados.length})
               </span>
             </h2>
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex rounded-lg bg-zinc-100 p-1 dark:bg-zinc-800">
+              <div
+                className="flex rounded-[var(--savvy-radius-sm)] p-1"
+                style={{ background: "var(--savvy-gray-100)" }}
+              >
                 {(
                   [
                     { id: "proximo" as const, label: "Por fecha" },
@@ -299,11 +350,12 @@ export default function HomeDashboard({ initialDate }: HomeDashboardProps) {
                     key={id}
                     type="button"
                     onClick={() => setOrden(id)}
-                    className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    className={`rounded-[10px] px-3 py-1.5 text-sm font-medium transition-colors ${
                       orden === id
-                        ? "bg-white text-zinc-900 shadow dark:bg-zinc-700 dark:text-zinc-100"
-                        : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                        ? "text-[var(--savvy-text-primary)] shadow-sm"
+                        : "text-[var(--savvy-text-muted)] hover:text-[var(--savvy-text-primary)]"
                     }`}
+                    style={orden === id ? { background: "var(--savvy-bg-elevated)" } : undefined}
                   >
                     {label}
                   </button>
@@ -314,7 +366,7 @@ export default function HomeDashboard({ initialDate }: HomeDashboardProps) {
                   type="button"
                   onClick={handleSeed}
                   disabled={seeding}
-                  className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
+                  className="rounded-[var(--savvy-radius-sm)] bg-[var(--savvy-accent)] px-3 py-1.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
                   {seeding ? "Cargando…" : "Cargar datos de ejemplo"}
                 </button>
@@ -324,26 +376,31 @@ export default function HomeDashboard({ initialDate }: HomeDashboardProps) {
 
           {loading && (
             <div className="flex flex-col items-center justify-center gap-3 py-16">
-              <div className="h-10 w-10 animate-spin rounded-full border-2 border-zinc-300 border-t-emerald-600 dark:border-zinc-600 dark:border-t-emerald-500" />
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              <div
+                className="h-9 w-9 animate-spin rounded-full border-2 border-[var(--savvy-gray-300)] border-t-[var(--savvy-accent)]"
+                aria-hidden
+              />
+              <p className="text-sm text-[var(--savvy-text-muted)]">
                 Cargando pagos…
               </p>
             </div>
           )}
 
           {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950/30">
-              <p className="text-sm font-medium text-red-800 dark:text-red-200">
+            <div
+              className="rounded-[var(--savvy-radius)] border p-4"
+              style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+            >
+              <p className="text-sm font-medium text-[var(--savvy-text-primary)]">
                 {error}
               </p>
-              <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-                Comprueba que la conexión a la base de datos (DB_* o DATABASE_URL) esté en .env y que
-                la tabla recurring_payments exista.
+              <p className="mt-1 text-xs text-[var(--savvy-text-muted)]">
+                Revisa la conexión a la base de datos y que la tabla recurring_payments exista.
               </p>
               <button
                 type="button"
                 onClick={fetchPagos}
-                className="mt-3 rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
+                className="mt-3 rounded-[var(--savvy-radius-sm)] bg-[var(--savvy-accent)] px-3 py-1.5 text-sm font-medium text-white hover:opacity-90"
               >
                 Reintentar
               </button>
@@ -351,10 +408,12 @@ export default function HomeDashboard({ initialDate }: HomeDashboardProps) {
           )}
 
           {!loading && !error && pagos.length === 0 && (
-            <div className="rounded-xl border border-zinc-200 bg-zinc-50 py-12 text-center dark:border-zinc-700 dark:bg-zinc-800/50">
-              <p className="text-zinc-600 dark:text-zinc-400">
-                No hay pagos recurrentes. Carga datos de ejemplo con el botón de
-                arriba para insertar los datos de ejemplo.
+            <div
+              className="rounded-[var(--savvy-radius)] border py-12 text-center"
+              style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+            >
+              <p className="text-[var(--savvy-text-secondary)]">
+                No hay pagos recurrentes. Usa el botón de arriba para cargar datos de ejemplo.
               </p>
             </div>
           )}

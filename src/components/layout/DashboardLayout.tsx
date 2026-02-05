@@ -31,26 +31,32 @@ export default function DashboardLayout({
         style={{ pointerEvents: mobileMenuOpen ? "auto" : "none" }}
       >
         <div
-          className={`absolute inset-0 bg-black/50 transition-opacity duration-200 ${
+          className={`absolute inset-0 bg-[var(--savvy-primary)]/40 transition-opacity duration-200 ${
             mobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={() => setMobileMenuOpen(false)}
           aria-hidden
         />
         <div
-          className={`absolute left-0 top-0 flex h-full w-80 max-w-[85vw] flex-col border-r border-zinc-200 bg-white shadow-xl transition-transform duration-200 ease-out dark:border-zinc-800 dark:bg-zinc-900 ${
+          className={`absolute left-0 top-0 flex h-full w-80 max-w-[85vw] flex-col border-r shadow-xl transition-transform duration-200 ease-out ${
             mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
+          style={{
+            borderColor: "var(--savvy-border)",
+            background: "var(--savvy-bg-elevated)",
+          }}
         >
-          <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-zinc-200 px-4 dark:border-zinc-800">
-            <span className="flex items-center gap-2 font-semibold text-zinc-900 dark:text-zinc-50">
-              <span className="text-xl">💰</span>
-              Navegación
+          <div
+            className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4"
+            style={{ borderColor: "var(--savvy-border)" }}
+          >
+            <span className="flex items-center gap-2 font-semibold text-[var(--savvy-text-primary)]">
+              <span className="text-lg lowercase">savvy</span>
             </span>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="-mr-2 flex h-10 w-10 items-center justify-center rounded-lg text-zinc-600 transition-colors hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="-mr-2 flex h-10 w-10 items-center justify-center rounded-[var(--savvy-radius-sm)] text-[var(--savvy-text-secondary)] transition-colors hover:bg-[var(--savvy-gray-100)] hover:text-[var(--savvy-text-primary)]"
               aria-label="Cerrar menú"
             >
               <svg

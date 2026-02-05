@@ -32,7 +32,7 @@ export default function Menu({ onLinkClick, compact = false }: MenuProps) {
     <nav className="flex flex-col gap-6 px-3 py-2" aria-label="Navegación principal">
       {sections.map((section) => (
         <div key={section.title}>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[var(--savvy-text-muted)]">
             {section.title}
           </p>
           <ul className="flex flex-col gap-0.5" role="list">
@@ -43,17 +43,17 @@ export default function Menu({ onLinkClick, compact = false }: MenuProps) {
                   <Link
                     href={href}
                     onClick={onLinkClick}
-                    className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${
+                    className={`group flex items-center gap-3 rounded-[var(--savvy-radius-sm)] px-3 py-2.5 text-left transition-colors duration-200 ${
                       isActive
-                        ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200"
-                        : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                        ? "bg-[var(--savvy-accent-muted)] text-[var(--savvy-accent)]"
+                        : "text-[var(--savvy-text-secondary)] hover:bg-[var(--savvy-gray-100)] hover:text-[var(--savvy-text-primary)]"
                     } ${compact ? "py-2" : ""}`}
                   >
                     <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] ${
                         isActive
-                          ? "bg-emerald-200/80 text-emerald-800 dark:bg-emerald-800/50 dark:text-emerald-200"
-                          : "bg-zinc-100 text-zinc-600 group-hover:bg-zinc-200 group-hover:text-zinc-800 dark:bg-zinc-800 dark:text-zinc-400 dark:group-hover:bg-zinc-700 dark:group-hover:text-zinc-200"
+                          ? "bg-[var(--savvy-accent)]/20 text-[var(--savvy-accent)]"
+                          : "bg-[var(--savvy-gray-100)] text-[var(--savvy-text-muted)] group-hover:bg-[var(--savvy-gray-300)] group-hover:text-[var(--savvy-text-primary)]"
                       }`}
                       aria-hidden
                     >
@@ -65,8 +65,8 @@ export default function Menu({ onLinkClick, compact = false }: MenuProps) {
                         <span
                           className={`mt-0.5 block truncate text-xs ${
                             isActive
-                              ? "text-emerald-600 dark:text-emerald-400"
-                              : "text-zinc-500 dark:text-zinc-400"
+                              ? "text-[var(--savvy-accent)]/90"
+                              : "text-[var(--savvy-text-muted)]"
                           }`}
                         >
                           {description}
@@ -75,7 +75,7 @@ export default function Menu({ onLinkClick, compact = false }: MenuProps) {
                     </span>
                     {isActive && (
                       <span
-                        className="h-2 w-2 shrink-0 rounded-full bg-emerald-500"
+                        className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--savvy-accent)]"
                         aria-hidden
                       />
                     )}

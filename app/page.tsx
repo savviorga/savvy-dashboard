@@ -85,29 +85,48 @@ export default function Home() {
         }
       : null;
 
+  const cardClass =
+    "rounded-[var(--savvy-radius)] border p-5 transition-shadow hover:shadow-sm";
+  const cardStyle = {
+    borderColor: "var(--savvy-border)",
+    background: "var(--savvy-bg-elevated)",
+  };
+  const mutedClass = "text-sm font-medium text-[var(--savvy-text-muted)]";
+  const valueClass = "mt-1 text-2xl font-semibold tracking-tight text-[var(--savvy-text-primary)] sm:text-3xl";
+  const hintClass = "mt-1 text-xs text-[var(--savvy-text-muted)]";
+
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950">
+    <div
+      className="min-h-screen overflow-y-auto"
+      style={{ background: "var(--savvy-bg)" }}
+    >
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+        <header className="mb-10">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--savvy-text-primary)] sm:text-3xl">
             Inicio
           </h1>
-          <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-            Resumen de tus finanzas personales
+          <p className="mt-1.5 text-[var(--savvy-text-secondary)]">
+            Resumen de tus finanzas
           </p>
         </header>
 
         {loading && (
-          <div className="flex justify-center py-16">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-zinc-300 border-t-emerald-600 dark:border-zinc-600 dark:border-t-emerald-500" />
+          <div className="flex justify-center py-20">
+            <div
+              className="h-9 w-9 animate-spin rounded-full border-2 border-[var(--savvy-gray-300)] border-t-[var(--savvy-accent)]"
+              aria-hidden
+            />
           </div>
         )}
 
         {error && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
-            <p className="text-sm text-amber-800 dark:text-amber-200">
+          <div
+            className="rounded-[var(--savvy-radius)] border p-4"
+            style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+          >
+            <p className="text-sm text-[var(--savvy-text-secondary)]">
               No se pudieron cargar los datos.{" "}
-              <Link href="/home" className="font-medium underline">
+              <Link href="/home" className="font-medium text-[var(--savvy-accent)] hover:underline">
                 Ir a Finanzas
               </Link>
             </p>
@@ -116,66 +135,46 @@ export default function Home() {
 
         {!loading && !error && stats && (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Pagos recurrentes
-              </p>
-              <p className="mt-1 text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-                {stats.total}
-              </p>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Total activos
-              </p>
+            <article className={cardClass} style={cardStyle}>
+              <p className={mutedClass}>Pagos recurrentes</p>
+              <p className={valueClass}>{stats.total}</p>
+              <p className={hintClass}>Total activos</p>
             </article>
-
-            <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Por vencer (30 días)
-              </p>
-              <p className="mt-1 text-3xl font-bold text-amber-600 dark:text-amber-400">
-                {stats.porVencer30}
-              </p>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Próximo mes
-              </p>
+            <article className={cardClass} style={cardStyle}>
+              <p className={mutedClass}>Por vencer (30 días)</p>
+              <p className={`${valueClass} text-[var(--savvy-accent)]`}>{stats.porVencer30}</p>
+              <p className={hintClass}>Próximo mes</p>
             </article>
-
-            <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Próximos 7 días
-              </p>
-              <p className="mt-1 text-3xl font-bold text-red-600 dark:text-red-400">
+            <article className={cardClass} style={cardStyle}>
+              <p className={mutedClass}>Próximos 7 días</p>
+              <p className={`${valueClass}`} style={{ color: "var(--savvy-accent)" }}>
                 {stats.proximos7}
               </p>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Requieren atención
-              </p>
+              <p className={hintClass}>Revisar pronto</p>
             </article>
-
-            <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-              <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Total estimado
-              </p>
-              <p className="mt-1 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+            <article className={cardClass} style={cardStyle}>
+              <p className={mutedClass}>Total estimado</p>
+              <p className={`${valueClass}`} style={{ color: "var(--savvy-accent)" }}>
                 {formatearCOP(stats.totalMonto)}
               </p>
-              <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                Suma de montos
-              </p>
+              <p className={hintClass}>Suma de montos</p>
             </article>
           </div>
         )}
 
         {!loading && !error && stats && stats.total === 0 && (
-          <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-6 text-center dark:border-zinc-700 dark:bg-zinc-800/50">
-            <p className="text-zinc-600 dark:text-zinc-400">
+          <div
+            className="mt-8 rounded-[var(--savvy-radius)] border p-8 text-center"
+            style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+          >
+            <p className="text-[var(--savvy-text-secondary)]">
               Aún no hay pagos recurrentes.
             </p>
             <Link
               href="/home"
-              className="mt-3 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+              className="mt-4 inline-block rounded-[var(--savvy-radius-sm)] bg-[var(--savvy-accent)] px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
-              Ir a Finanzas y cargar datos
+              Cargar datos de ejemplo
             </Link>
           </div>
         )}
@@ -184,7 +183,8 @@ export default function Home() {
           <div className="mt-8">
             <Link
               href="/home"
-              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+              className="inline-flex items-center gap-2 rounded-[var(--savvy-radius-sm)] border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[var(--savvy-gray-100)]"
+              style={{ borderColor: "var(--savvy-border)", color: "var(--savvy-text-primary)", background: "var(--savvy-bg-elevated)" }}
             >
               Ver todos los pagos
               <span aria-hidden>→</span>
@@ -192,51 +192,38 @@ export default function Home() {
           </div>
         )}
 
-        {/* Gastos n8n: conteos */}
         {!loading && gastosStats && (
-          <section className="mt-10 border-t border-zinc-200 pt-10 dark:border-zinc-700">
-            <h2 className="mb-4 text-lg font-semibold text-zinc-800 dark:text-zinc-200">
+          <section
+            className="mt-12 border-t pt-10"
+            style={{ borderColor: "var(--savvy-border)" }}
+          >
+            <h2 className="mb-4 text-lg font-semibold text-[var(--savvy-text-primary)]">
               Gastos n8n
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-                <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                  Total ítems
-                </p>
-                <p className="mt-1 text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-                  {gastosStats.totalItems}
-                </p>
-                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                  Registros en items_gastos
-                </p>
+              <article className={cardClass} style={cardStyle}>
+                <p className={mutedClass}>Total ítems</p>
+                <p className={valueClass}>{gastosStats.totalItems}</p>
+                <p className={hintClass}>Registros</p>
               </article>
-              <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-                <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                  Total gastado
-                </p>
-                <p className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">
+              <article className={cardClass} style={cardStyle}>
+                <p className={mutedClass}>Total gastado</p>
+                <p className={valueClass} style={{ color: "var(--savvy-accent)" }}>
                   {formatearCOP(gastosStats.totalGastado)}
                 </p>
-                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                  Suma de totales
-                </p>
+                <p className={hintClass}>Suma de totales</p>
               </article>
-              <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
-                <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                  Categorías
-                </p>
-                <p className="mt-1 text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-                  {gastosStats.categorias}
-                </p>
-                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                  Distintas categorías
-                </p>
+              <article className={cardClass} style={cardStyle}>
+                <p className={mutedClass}>Categorías</p>
+                <p className={valueClass}>{gastosStats.categorias}</p>
+                <p className={hintClass}>Distintas</p>
               </article>
             </div>
             <div className="mt-4">
               <Link
                 href="/gastos-n8n"
-                className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+                className="inline-flex items-center gap-2 rounded-[var(--savvy-radius-sm)] border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[var(--savvy-gray-100)]"
+                style={{ borderColor: "var(--savvy-border)", color: "var(--savvy-text-primary)", background: "var(--savvy-bg-elevated)" }}
               >
                 Ver listado de gastos n8n
                 <span aria-hidden>→</span>

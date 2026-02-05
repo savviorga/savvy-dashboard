@@ -54,20 +54,20 @@ export default function GastosN8nPage() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-y-auto bg-gradient-to-b from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950">
+    <div className="min-h-screen overflow-y-auto" style={{ background: "var(--savvy-bg)" }}>
       <div className="mx-auto max-w-6xl px-4 py-6 pb-12 sm:px-6 sm:py-10 lg:px-8">
         <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl lg:text-4xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-[var(--savvy-text-primary)] sm:text-3xl">
             Gastos n8n
           </h1>
-          <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400 sm:mt-2 sm:text-base">
-            Registros de public.items_gastos (base db_savvy)
+          <p className="mt-1.5 text-sm text-[var(--savvy-text-secondary)] sm:mt-2 sm:text-base">
+            Registros de items_gastos (db_savvy)
           </p>
         </header>
 
         {loading && (
           <div className="flex justify-center py-16">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-zinc-300 border-t-emerald-600 dark:border-zinc-600 dark:border-t-emerald-500" />
+            <div className="h-9 w-9 animate-spin rounded-full border-2 border-[var(--savvy-gray-300)] border-t-[var(--savvy-accent)]" aria-hidden />
           </div>
         )}
 
@@ -97,23 +97,26 @@ export default function GastosN8nPage() {
             <ul className="flex flex-col gap-3 pb-2 md:hidden">
               {items.map((row) => (
                 <li key={row.id}>
-                  <article className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50">
+                  <article
+                    className="rounded-[var(--savvy-radius)] border p-4 shadow-sm"
+                    style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+                  >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
+                        <h3 className="font-semibold text-[var(--savvy-text-primary)]">
                           {row.nombre}
                         </h3>
-                        <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+                        <p className="mt-0.5 text-sm text-[var(--savvy-text-muted)]">
                           {row.categoria}
                           <span className="mx-1.5">·</span>
                           {row.cantidad} {row.cantidad === 1 ? "un." : "un."}
                         </p>
                       </div>
-                      <p className="shrink-0 font-semibold text-emerald-600 dark:text-emerald-400">
+                      <p className="shrink-0 font-semibold text-[var(--savvy-accent)]">
                         {formatearCOP(Number(row.total))}
                       </p>
                     </div>
-                    <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400">
+                    <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-[var(--savvy-text-muted)]">
                       <dt>Precio unit.</dt>
                       <dd className="text-right">{formatearCOP(Number(row.precio_unitario))}</dd>
                       <dt>Creado</dt>
@@ -125,7 +128,10 @@ export default function GastosN8nPage() {
             </ul>
 
             {/* Desktop: tabla */}
-            <div className="hidden overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-700 dark:bg-zinc-800/50 md:block">
+            <div
+              className="hidden overflow-hidden rounded-[var(--savvy-radius)] border shadow-sm md:block"
+              style={{ borderColor: "var(--savvy-border)", background: "var(--savvy-bg-elevated)" }}
+            >
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[700px] text-left text-sm">
                   <thead>
